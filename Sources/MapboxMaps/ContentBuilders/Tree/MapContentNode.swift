@@ -119,7 +119,8 @@ extension MapContentNode {
         let newIds: Set<AnyHashable> = newChildren.data.reduce(into: Set<AnyHashable>()) { result, next in
             _ = result.insert(next[keyPath: newChildren.id])
         }
-        let oldIdsMaps = Dictionary(uniqueKeysWithValues: children.map { ($0.id.anyId, $0) })
+        let keysWithValues = children.map { ($0.id.anyId, $0) }
+        let oldIdsMaps = Dictionary(keysWithValues, uniquingKeysWith: { (first, _) in first })
         for (id, node) in oldIdsMaps where !newIds.contains(id) { node.remove() }
 
         children = []
